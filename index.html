@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLBB Hero Ratings | Interactive Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; overflow-x: hidden; }
+        canvas { cursor: crosshair; touch-action: none; }
+        .tooltip {
+            position: absolute;
+            pointer-events: none;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #334155;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-size: 14px;
+            z-index: 50;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        .quadrant-label {
+            position: absolute;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center min-h-screen p-4 md:p-10">
+    
+    <header class="text-center mb-10">
+        <h1 class="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+            MLBB Hero Analytics
+        </h1>
+        <p class="text-slate-400 mt-2 font-medium">Mythic+ Performance: Win Rate vs. Popularity</p>
+    </header>
+
+    <main class="relative w-full max-w-5xl bg-slate-800/50 p-6 rounded-2xl border border-slate-700">
+        <!-- Quadrant Labels -->
+        <div class="quadrant-label top-10 right-10">Meta / S-Tier</div>
+        <div class="quadrant-label bottom-20 right-10">Popular / Situational</div>
+        <div class="quadrant-label top-10 left-20">Hidden Gems</div>
+        <div class="quadrant-label bottom-20 left-20">Off-Meta</div>
+
+        <div class="relative overflow-hidden rounded-xl bg-slate-950">
+            <canvas id="chartCanvas" class="w-full h-auto"></canvas>
+            <div id="tooltip" class="tooltip"></div>
+        </div>
+
+        <div class="mt-6 flex flex-wrap justify-center gap-6 text-xs text-slate-400 uppercase tracking-widest">
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span> High Win Rate (>50%)
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500"></span> Low Win Rate (<50%)
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-auto pt-10 pb-6 text-slate-500 text-sm flex flex-col items-center gap-2">
+        <div class="flex items-center gap-4">
+            <span>Data Updated: <span id="lastUpdated" class="text-slate-300">Loading...</span></span>
+            <span class="h-4 w-px bg-slate-700"></span>
+            <span>Source: Moonton GMS API</span>
+        </div>
+        <a href="https://github.com" class="hover:text-blue-400 transition-colors">View Project on GitHub</a>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('chartCanvas');
+        const ctx = canvas.getContext('2d');
+        const tooltip = document.getElementById('tooltip');
+        const lastUpdatedEl = document.getElementById('lastUpdated');
+        
+        let heroData = [];
+        const padding = { top: 60, right: 60, bottom: 80, left: 80 };
+        const avatarSize = 36;
+        let hoverHero = null;
+
+        // Internal resolution for crisp rendering
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = 1200 * dpr;
+        canvas.height = 800 * dpr;
+        ctx.scale(dpr, dpr);
+        const logicalWidth = canvas.width / dpr;
+        const logicalHeight = canvas.height / dpr;
+
+        async function init() {
+            try {
+                const response = await fetch('data.json');
+                if (!response.ok) throw new Error("Data file not found");
+                
+                const rawData = await response.json();
+                lastUpdatedEl.innerText = new Date().toLocaleDateString();
+
+                // Load images and prepare data
+                heroData = await Promise.all(rawData.map(hero => {
+                    return new Promise((resolve) => {
+                        const img = new Image();
+                        img.crossOrigin = "anonymous";
+                        // Use the 'head' field from your specific Moonton scrape logic
+                        img.src = hero.head || hero.avatar;
+                        img.onload = () => resolve({ ...hero, img });
+                        img.onerror = () => resolve({ ...hero, img: null });
+                    });
+                }));
+
+                render();
+                window.addEventListener('resize', render);
+                setupInteractions();
+            } catch (err) {
+                console.error("Dashboard Error:", err);
+                lastUpdatedEl.innerText = "Error loading data";
+            }
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, logicalWidth, logicalHeight);
+            
+            const plotWidth = logicalWidth - padding.left - padding.right;
+            const plotHeight = logicalHeight - padding.top - padding.bottom;
+
+            // X Scale: Use rate (Typically 0% to 4%)
+            const xMax = 4; 
+            // Y Scale: Win rate (Zoomed to competitive range 40% to 60%)
+            const yMin = 42;
+            const yMax = 58;
+
+            // 1. Draw Grid and Axes
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            ctx.font = '500 12px Inter, sans-serif';
+            ctx.textAlign = 'center';
+
+            // Vertical Grid (Use Rate)
+            for(let i=0; i<=xMax; i++) {
+                const x = padding.left + (i / xMax) * plotWidth;
+                ctx.beginPath();
+                ctx.moveTo(x, padding.top);
+                ctx.lineTo(x, logicalHeight - padding.bottom);
+                ctx.stroke();
+                ctx.fillStyle = '#64748b';
+                ctx.fillText(i + '%', x, logicalHeight - padding.bottom + 25);
+            }
+
+            // Horizontal Grid (Win Rate)
+            ctx.textAlign = 'right';
+            for(let val=yMin; val<=yMax; val+=2) {
+                const y = (padding.top + plotHeight) - ((val - yMin) / (yMax - yMin)) * plotHeight;
+                ctx.beginPath();
+                ctx.moveTo(padding.left, y);
+                ctx.lineTo(logicalWidth - padding.right, y);
+                ctx.stroke();
+                ctx.fillStyle = val === 50 ? '#94a3b8' : '#475569';
+                ctx.fillText(val + '%', padding.left - 15, y + 4);
+                
+                // Highlight 50% line
+                if (val === 50) {
+                    ctx.save();
+                    ctx.strokeStyle = '#334155';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 5]);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            }
+
+            // Axis Labels
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = 'bold 14px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Popularity (Appearance Rate %)', logicalWidth/2 + padding.left/2, logicalHeight - 20);
+            
+            ctx.save();
+            ctx.translate(25, logicalHeight/2);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('Efficiency (Win Rate %)', 0, 0);
+            ctx.restore();
+
+            // 2. Plot Heroes
+            heroData.forEach(hero => {
+                const wr = hero.winRate * 100;
+                const ur = hero.useRate * 100;
+
+                // Map to pixels
+                const x = padding.left + (ur / xMax) * plotWidth;
+                const y = (padding.top + plotHeight) - ((wr - yMin) / (yMax - yMin)) * plotHeight;
+
+                hero.canvasX = x;
+                hero.canvasY = y;
+
+                if (hero.img) {
+                    const isHovered = hoverHero === hero;
+                    const size = isHovered ? avatarSize * 1.3 : avatarSize;
+
+                    ctx.save();
+                    // Shadow for depth
+                    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                    ctx.shadowBlur = 10;
+
+                    // Draw circular avatar
+                    ctx.beginPath();
+                    ctx.arc(x, y, size/2, 0, Math.PI * 2);
+                    ctx.closePath();
+                    ctx.clip();
+                    ctx.drawImage(hero.img, x - size/2, y - size/2, size, size);
+                    ctx.restore();
+
+                    // Glow/Ring based on performance
+                    ctx.strokeStyle = wr >= 50 ? '#10b981' : '#f43f5e';
+                    ctx.lineWidth = isHovered ? 4 : 2;
+                    ctx.beginPath();
+                    ctx.arc(x, y, size/2, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            });
+        }
+
+        function setupInteractions() {
+            const handleInput = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                
+                const mouseX = (clientX - rect.left) * (logicalWidth / rect.width);
+                const mouseY = (clientY - rect.top) * (logicalHeight / rect.height);
+
+                let found = null;
+                // Reverse loop so we pick top-most hero if overlapping
+                for (let i = heroData.length - 1; i >= 0; i--) {
+                    const hero = heroData[i];
+                    const dist = Math.sqrt((mouseX - hero.canvasX)**2 + (mouseY - hero.canvasY)**2);
+                    if (dist < avatarSize / 1.5) {
+                        found = hero;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    hoverHero = found;
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = (clientX + 15) + 'px';
+                    tooltip.style.top = (clientY + 15) + 'px';
+                    
+                    const wr = (found.winRate * 100).toFixed(2);
+                    const ur = (found.useRate * 100).toFixed(2);
+                    
+                    tooltip.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <img src="${found.head}" class="w-10 h-10 rounded-full border border-slate-600">
+                            <div>
+                                <div class="font-bold text-white text-base">${found.name}</div>
+                                <div class="text-xs text-slate-400">Hero ID: ${found.heroId}</div>
+                            </div>
+                        </div>
+                        <div class="mt-3 grid grid-cols-2 gap-4 border-t border-slate-700 pt-2">
+                            <div>
+                                <div class="text-[10px] text-slate-500 uppercase font-bold">Win Rate</div>
+                                <div class="text-sm font-mono ${wr >= 50 ? 'text-emerald-400' : 'text-rose-400'}">${wr}%</div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] text-slate-500 uppercase font-bold">Pick Rate</div>
+                                <div class="text-sm font-mono text-blue-300">${ur}%</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    hoverHero = null;
+                    tooltip.style.display = 'none';
+                }
+                render();
+            };
+
+            canvas.addEventListener('mousemove', handleInput);
+            canvas.addEventListener('touchstart', handleInput);
+        }
+
+        init();
+    </script>
+</body>
+</html>
