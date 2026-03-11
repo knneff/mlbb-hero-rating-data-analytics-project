@@ -15,9 +15,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Debug File Structure
-        run: ls -R
+        # No extra path settings here to avoid doubling the folder
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -28,7 +26,7 @@ jobs:
         run: pip install requests
 
       - name: Run the Scraper
-        # Using ./ to ensure it looks in the current checked-out directory
+        # We tell it to look exactly in the root scripts folder
         run: python ./scripts/scrape_mlbb.py
 
       - name: Commit and Push Changes
