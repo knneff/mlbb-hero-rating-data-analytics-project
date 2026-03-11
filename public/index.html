@@ -3,284 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MLBB Hero Ratings | Interactive Analytics</title>
+    <title>MLBB Hero Meta Analytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0f172a; color: #f8fafc; overflow-x: hidden; }
-        canvas { cursor: crosshair; touch-action: none; }
+        body { background-color: #0f172a; color: #f8fafc; }
+        .canvas-container { position: relative; background: #020617; border-radius: 1rem; overflow: hidden; }
+        #heroCanvas { cursor: crosshair; width: 100%; height: 600px; display: block; }
         .tooltip {
             position: absolute;
             pointer-events: none;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(15, 23, 42, 0.98);
             border: 1px solid #334155;
             padding: 12px;
             border-radius: 8px;
             display: none;
-            font-size: 14px;
             z-index: 50;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
-        .quadrant-label {
-            position: absolute;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: rgba(255, 255, 255, 0.1);
-            pointer-events: none;
-            user-select: none;
+            min-width: 180px;
+            transition: opacity 0.1s ease-out;
         }
     </style>
 </head>
-<body class="flex flex-col items-center min-h-screen p-4 md:p-10">
-    
-    <header class="text-center mb-10">
-        <h1 class="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
-            MLBB Hero Analytics
-        </h1>
-        <p class="text-slate-400 mt-2 font-medium">Mythic+ Performance: Win Rate vs. Popularity</p>
-    </header>
-
-    <main class="relative w-full max-w-5xl bg-slate-800/50 p-6 rounded-2xl border border-slate-700">
-        <!-- Quadrant Labels -->
-        <div class="quadrant-label top-10 right-10">Meta / S-Tier</div>
-        <div class="quadrant-label bottom-20 right-10">Popular / Situational</div>
-        <div class="quadrant-label top-10 left-20">Hidden Gems</div>
-        <div class="quadrant-label bottom-20 left-20">Off-Meta</div>
-
-        <div class="relative overflow-hidden rounded-xl bg-slate-950">
-            <canvas id="chartCanvas" class="w-full h-auto"></canvas>
-            <div id="tooltip" class="tooltip"></div>
-        </div>
-
-        <div class="mt-6 flex flex-wrap justify-center gap-6 text-xs text-slate-400 uppercase tracking-widest">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-emerald-500"></span> High Win Rate (>50%)
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-8 flex justify-between items-center border-b border-slate-800 pb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-blue-400">MLBB Hero Analytics</h1>
+                <p class="text-slate-400">Mythic+ Performance: Win Rate vs. Popularity</p>
             </div>
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-rose-500"></span> Low Win Rate (<50%)
+            <div id="status" class="text-xs bg-slate-800 px-4 py-2 rounded-full text-slate-300 font-mono">
+                Initializing...
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Sidebar Stats -->
+            <div class="lg:col-span-1 space-y-4">
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                    <h3 class="text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Highest Win Rate</h3>
+                    <div id="topWinRate" class="text-xl font-bold text-emerald-400">--</div>
+                </div>
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                    <h3 class="text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Most Popular</h3>
+                    <div id="topUseRate" class="text-xl font-bold text-blue-400">--</div>
+                </div>
+                <div class="bg-blue-900/20 p-4 rounded-xl border border-blue-800/50 text-sm text-blue-200">
+                    <p>💡 <b>Tip:</b> Hover over icons to see detailed Ban Rates and Pick stats.</p>
+                </div>
+            </div>
+
+            <!-- Main Canvas Chart -->
+            <div class="lg:col-span-3">
+                <div id="container" class="canvas-container shadow-2xl border border-slate-800">
+                    <div id="tooltip" class="tooltip"></div>
+                    <canvas id="heroCanvas"></canvas>
+                    
+                    <!-- Axis Labels -->
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">Appearance Rate (Pick %)</div>
+                    <div class="absolute left-4 top-1/2 -rotate-90 -translate-y-1/2 text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">Win Rate (%)</div>
+                </div>
             </div>
         </div>
-    </main>
-
-    <footer class="mt-auto pt-10 pb-6 text-slate-500 text-sm flex flex-col items-center gap-2">
-        <div class="flex items-center gap-4">
-            <span>Data Updated: <span id="lastUpdated" class="text-slate-300">Loading...</span></span>
-            <span class="h-4 w-px bg-slate-700"></span>
-            <span>Source: Moonton GMS API</span>
-        </div>
-        <a href="https://github.com" class="hover:text-blue-400 transition-colors">View Project on GitHub</a>
-    </footer>
+    </div>
 
     <script>
-        const canvas = document.getElementById('chartCanvas');
+        const canvas = document.getElementById('heroCanvas');
+        const container = document.getElementById('container');
         const ctx = canvas.getContext('2d');
         const tooltip = document.getElementById('tooltip');
-        const lastUpdatedEl = document.getElementById('lastUpdated');
+        const statusEl = document.getElementById('status');
         
-        let heroData = [];
-        const padding = { top: 60, right: 60, bottom: 80, left: 80 };
-        const avatarSize = 36;
+        let heroes = [];
+        let images = {};
+        const padding = 70;
+        const iconSize = 28; // Reduced from 36
         let hoverHero = null;
-
-        // Internal resolution for crisp rendering
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = 1200 * dpr;
-        canvas.height = 800 * dpr;
-        ctx.scale(dpr, dpr);
-        const logicalWidth = canvas.width / dpr;
-        const logicalHeight = canvas.height / dpr;
 
         async function init() {
             try {
-                const response = await fetch('data.json');
-                if (!response.ok) throw new Error("Data file not found");
+                const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+                const dataUrl = baseUrl + 'data.json';
                 
-                const rawData = await response.json();
-                lastUpdatedEl.innerText = new Date().toLocaleDateString();
-
-                // Load images and prepare data
-                heroData = await Promise.all(rawData.map(hero => {
-                    return new Promise((resolve) => {
-                        const img = new Image();
-                        img.crossOrigin = "anonymous";
-                        // Use the 'head' field from your specific Moonton scrape logic
-                        img.src = hero.head || hero.avatar;
-                        img.onload = () => resolve({ ...hero, img });
-                        img.onerror = () => resolve({ ...hero, img: null });
-                    });
-                }));
-
-                render();
-                window.addEventListener('resize', render);
-                setupInteractions();
+                const response = await fetch(dataUrl);
+                if (!response.ok) throw new Error("Data not found at " + dataUrl);
+                
+                heroes = await response.json();
+                statusEl.innerText = `Dataset: ${heroes.length} Heroes`;
+                
+                updateSidebar();
+                loadImages();
             } catch (err) {
-                console.error("Dashboard Error:", err);
-                lastUpdatedEl.innerText = "Error loading data";
+                statusEl.innerText = "Error: data.json not found";
+                statusEl.classList.add('text-red-400');
+                console.error("Fetch failed:", err);
             }
         }
 
-        function render() {
-            ctx.clearRect(0, 0, logicalWidth, logicalHeight);
+        function updateSidebar() {
+            if (!heroes.length) return;
+            const sortedWin = [...heroes].sort((a, b) => b.winRate - a.winRate);
+            const sortedUse = [...heroes].sort((a, b) => b.useRate - a.useRate);
             
-            const plotWidth = logicalWidth - padding.left - padding.right;
-            const plotHeight = logicalHeight - padding.top - padding.bottom;
+            document.getElementById('topWinRate').innerText = `${sortedWin[0].name} (${(sortedWin[0].winRate * 100).toFixed(1)}%)`;
+            document.getElementById('topUseRate').innerText = `${sortedUse[0].name} (${(sortedUse[0].useRate * 100).toFixed(1)}%)`;
+        }
 
-            // X Scale: Use rate (Typically 0% to 4%)
-            const xMax = 4; 
-            // Y Scale: Win rate (Zoomed to competitive range 40% to 60%)
-            const yMin = 42;
-            const yMax = 58;
+        function loadImages() {
+            let loaded = 0;
+            if (heroes.length === 0) return;
 
-            // 1. Draw Grid and Axes
+            heroes.forEach(hero => {
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.src = hero.avatar;
+                img.onload = () => {
+                    loaded++;
+                    images[hero.heroId] = img;
+                    if (loaded === heroes.length) draw();
+                };
+                img.onerror = () => {
+                    loaded++;
+                    if (loaded === heroes.length) draw();
+                };
+            });
+            draw();
+        }
+
+        function drawHero(hero, isHovered, minWin, maxWin, minUse, maxUse, w, h) {
+            const x = padding + ((hero.useRate - minUse) / (maxUse - minUse)) * (w - 2 * padding);
+            const y = (h - padding) - ((hero.winRate - minWin) / (maxWin - minWin)) * (h - 2 * padding);
+
+            hero.posX = x;
+            hero.posY = y;
+
+            const size = isHovered ? iconSize * 2.2 : iconSize; // Increased scale multiplier to maintain detail when hovered
+
+            if (images[hero.heroId]) {
+                ctx.save();
+                if (isHovered) {
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+                }
+                ctx.beginPath();
+                ctx.arc(x, y, size / 2, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(images[hero.heroId], x - size/2, y - size/2, size, size);
+                ctx.restore();
+                
+                ctx.strokeStyle = hero.winRate >= 0.5 ? '#10b981' : '#f43f5e';
+                ctx.lineWidth = isHovered ? 4 : 2;
+                ctx.beginPath();
+                ctx.arc(x, y, size / 2, 0, Math.PI * 2);
+                ctx.stroke();
+            } else {
+                ctx.fillStyle = hero.winRate >= 0.5 ? '#10b981' : '#f43f5e';
+                ctx.beginPath();
+                ctx.arc(x, y, isHovered ? 12 : 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function draw() {
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = canvas.offsetWidth * dpr;
+            canvas.height = canvas.offsetHeight * dpr;
+            ctx.scale(dpr, dpr);
+
+            const w = canvas.offsetWidth;
+            const h = canvas.offsetHeight;
+
+            ctx.clearRect(0, 0, w, h);
+
+            if (heroes.length === 0) return;
+
+            const winRates = heroes.map(h => h.winRate);
+            const useRates = heroes.map(h => h.useRate);
+            
+            const minWin = Math.min(...winRates) * 0.98;
+            const maxWin = Math.max(...winRates) * 1.02;
+            const minUse = 0;
+            const maxUse = Math.max(...useRates) * 1.1;
+
             ctx.strokeStyle = '#1e293b';
             ctx.lineWidth = 1;
-            ctx.font = '500 12px Inter, sans-serif';
-            ctx.textAlign = 'center';
+            ctx.font = '10px Inter, sans-serif';
+            ctx.fillStyle = '#475569';
 
-            // Vertical Grid (Use Rate)
-            for(let i=0; i<=xMax; i++) {
-                const x = padding.left + (i / xMax) * plotWidth;
-                ctx.beginPath();
-                ctx.moveTo(x, padding.top);
-                ctx.lineTo(x, logicalHeight - padding.bottom);
-                ctx.stroke();
-                ctx.fillStyle = '#64748b';
-                ctx.fillText(i + '%', x, logicalHeight - padding.bottom + 25);
-            }
-
-            // Horizontal Grid (Win Rate)
             ctx.textAlign = 'right';
-            for(let val=yMin; val<=yMax; val+=2) {
-                const y = (padding.top + plotHeight) - ((val - yMin) / (yMax - yMin)) * plotHeight;
+            for (let i = 0; i <= 5; i++) {
+                const val = minWin + (i * (maxWin - minWin) / 5);
+                const y = (h - padding) - (i * (h - 2 * padding) / 5);
                 ctx.beginPath();
-                ctx.moveTo(padding.left, y);
-                ctx.lineTo(logicalWidth - padding.right, y);
+                ctx.moveTo(padding, y);
+                ctx.lineTo(w - padding, y);
                 ctx.stroke();
-                ctx.fillStyle = val === 50 ? '#94a3b8' : '#475569';
-                ctx.fillText(val + '%', padding.left - 15, y + 4);
-                
-                // Highlight 50% line
-                if (val === 50) {
-                    ctx.save();
-                    ctx.strokeStyle = '#334155';
-                    ctx.lineWidth = 2;
-                    ctx.setLineDash([5, 5]);
-                    ctx.stroke();
-                    ctx.restore();
-                }
+                ctx.fillText((val * 100).toFixed(1) + '%', padding - 10, y + 3);
             }
 
-            // Axis Labels
-            ctx.fillStyle = '#94a3b8';
-            ctx.font = 'bold 14px Inter, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('Popularity (Appearance Rate %)', logicalWidth/2 + padding.left/2, logicalHeight - 20);
-            
-            ctx.save();
-            ctx.translate(25, logicalHeight/2);
-            ctx.rotate(-Math.PI/2);
-            ctx.fillText('Efficiency (Win Rate %)', 0, 0);
-            ctx.restore();
+            for (let i = 0; i <= 5; i++) {
+                const val = minUse + (i * (maxUse - minUse) / 5);
+                const x = padding + (i * (w - 2 * padding) / 5);
+                ctx.beginPath();
+                ctx.moveTo(x, padding);
+                ctx.lineTo(x, h - padding);
+                ctx.stroke();
+                ctx.fillText((val * 100).toFixed(1) + '%', x, h - padding + 20);
+            }
 
-            // 2. Plot Heroes
-            heroData.forEach(hero => {
-                const wr = hero.winRate * 100;
-                const ur = hero.useRate * 100;
-
-                // Map to pixels
-                const x = padding.left + (ur / xMax) * plotWidth;
-                const y = (padding.top + plotHeight) - ((wr - yMin) / (yMax - yMin)) * plotHeight;
-
-                hero.canvasX = x;
-                hero.canvasY = y;
-
-                if (hero.img) {
-                    const isHovered = hoverHero === hero;
-                    const size = isHovered ? avatarSize * 1.3 : avatarSize;
-
-                    ctx.save();
-                    // Shadow for depth
-                    ctx.shadowColor = 'rgba(0,0,0,0.5)';
-                    ctx.shadowBlur = 10;
-
-                    // Draw circular avatar
-                    ctx.beginPath();
-                    ctx.arc(x, y, size/2, 0, Math.PI * 2);
-                    ctx.closePath();
-                    ctx.clip();
-                    ctx.drawImage(hero.img, x - size/2, y - size/2, size, size);
-                    ctx.restore();
-
-                    // Glow/Ring based on performance
-                    ctx.strokeStyle = wr >= 50 ? '#10b981' : '#f43f5e';
-                    ctx.lineWidth = isHovered ? 4 : 2;
-                    ctx.beginPath();
-                    ctx.arc(x, y, size/2, 0, Math.PI * 2);
-                    ctx.stroke();
+            heroes.forEach(hero => {
+                if (hero !== hoverHero) {
+                    drawHero(hero, false, minWin, maxWin, minUse, maxUse, w, h);
                 }
             });
+
+            if (hoverHero) {
+                drawHero(hoverHero, true, minWin, maxWin, minUse, maxUse, w, h);
+            }
         }
 
-        function setupInteractions() {
-            const handleInput = (e) => {
-                const rect = canvas.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                
-                const mouseX = (clientX - rect.left) * (logicalWidth / rect.width);
-                const mouseY = (clientY - rect.top) * (logicalHeight / rect.height);
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
 
-                let found = null;
-                // Reverse loop so we pick top-most hero if overlapping
-                for (let i = heroData.length - 1; i >= 0; i--) {
-                    const hero = heroData[i];
-                    const dist = Math.sqrt((mouseX - hero.canvasX)**2 + (mouseY - hero.canvasY)**2);
-                    if (dist < avatarSize / 1.5) {
-                        found = hero;
-                        break;
-                    }
+            let found = null;
+            for (let i = heroes.length - 1; i >= 0; i--) {
+                const hero = heroes[i];
+                const dist = Math.sqrt((mouseX - hero.posX)**2 + (mouseY - hero.posY)**2);
+                if (dist < iconSize / 1.5) {
+                    found = hero;
+                    break;
                 }
+            }
 
-                if (found) {
+            if (found) {
+                if (hoverHero !== found) {
                     hoverHero = found;
-                    tooltip.style.display = 'block';
-                    tooltip.style.left = (clientX + 15) + 'px';
-                    tooltip.style.top = (clientY + 15) + 'px';
-                    
-                    const wr = (found.winRate * 100).toFixed(2);
-                    const ur = (found.useRate * 100).toFixed(2);
-                    
-                    tooltip.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <img src="${found.head}" class="w-10 h-10 rounded-full border border-slate-600">
-                            <div>
-                                <div class="font-bold text-white text-base">${found.name}</div>
-                                <div class="text-xs text-slate-400">Hero ID: ${found.heroId}</div>
-                            </div>
-                        </div>
-                        <div class="mt-3 grid grid-cols-2 gap-4 border-t border-slate-700 pt-2">
-                            <div>
-                                <div class="text-[10px] text-slate-500 uppercase font-bold">Win Rate</div>
-                                <div class="text-sm font-mono ${wr >= 50 ? 'text-emerald-400' : 'text-rose-400'}">${wr}%</div>
-                            </div>
-                            <div>
-                                <div class="text-[10px] text-slate-500 uppercase font-bold">Pick Rate</div>
-                                <div class="text-sm font-mono text-blue-300">${ur}%</div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    hoverHero = null;
-                    tooltip.style.display = 'none';
+                    draw();
                 }
-                render();
-            };
+                
+                tooltip.style.display = 'block';
+                tooltip.innerHTML = `
+                    <div class="flex items-center gap-3 mb-2">
+                        <img src="${found.avatar}" class="w-10 h-10 rounded-full border border-slate-700">
+                        <div>
+                            <div class="font-bold text-white text-base leading-tight">${found.name}</div>
+                            <div class="text-[10px] text-slate-500 font-bold uppercase">ID: ${found.heroId}</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 border-t border-slate-800 pt-2 mt-2">
+                        <div>
+                            <div class="text-[9px] text-slate-500 uppercase font-black">Win Rate</div>
+                            <div class="font-mono font-bold ${found.winRate >= 0.5 ? 'text-emerald-400' : 'text-rose-400'}">${(found.winRate * 100).toFixed(2)}%</div>
+                        </div>
+                        <div>
+                            <div class="text-[9px] text-slate-500 uppercase font-black">Pick Rate</div>
+                            <div class="font-mono font-bold text-blue-400">${(found.useRate * 100).toFixed(2)}%</div>
+                        </div>
+                    </div>
+                `;
 
-            canvas.addEventListener('mousemove', handleInput);
-            canvas.addEventListener('touchstart', handleInput);
-        }
+                const containerRect = container.getBoundingClientRect();
+                const tooltipWidth = tooltip.offsetWidth;
+                const offset = 35; // Increased offset from 20 to 35
 
+                let posX = mouseX + offset;
+                let posY = mouseY - (tooltip.offsetHeight / 2);
+
+                if (posX + tooltipWidth > containerRect.width - 10) {
+                    posX = mouseX - tooltipWidth - offset;
+                }
+
+                if (posY < 10) posY = 10;
+                if (posY + tooltip.offsetHeight > containerRect.height - 10) {
+                    posY = containerRect.height - tooltip.offsetHeight - 10;
+                }
+
+                tooltip.style.left = posX + 'px';
+                tooltip.style.top = posY + 'px';
+                tooltip.style.opacity = '1';
+                
+            } else if (hoverHero) {
+                hoverHero = null;
+                tooltip.style.display = 'none';
+                tooltip.style.opacity = '0';
+                draw();
+            }
+        });
+
+        window.addEventListener('resize', draw);
         init();
     </script>
 </body>
