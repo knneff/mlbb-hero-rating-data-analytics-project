@@ -1,1 +1,919 @@
-[]
+[
+  {
+    "name": "Lancelot",
+    "winRate": 1.0,
+    "useRate": 2.9e-05,
+    "heroId": 47,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/47.png"
+  },
+  {
+    "name": "Selena",
+    "winRate": 1.0,
+    "useRate": 2.9e-05,
+    "heroId": 63,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/63.png"
+  },
+  {
+    "name": "Zhask",
+    "winRate": 1.0,
+    "useRate": 8.6e-05,
+    "heroId": 50,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/50.png"
+  },
+  {
+    "name": "Yve",
+    "winRate": 1.0,
+    "useRate": 2.9e-05,
+    "heroId": 101,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/101.png"
+  },
+  {
+    "name": "Lancelot",
+    "winRate": 1.0,
+    "useRate": 2.9e-05,
+    "heroId": 47,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/47.png"
+  },
+  {
+    "name": "Mathilda",
+    "winRate": 1.0,
+    "useRate": 8.6e-05,
+    "heroId": 102,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/102.png"
+  },
+  {
+    "name": "Diggie",
+    "winRate": 1.0,
+    "useRate": 2.9e-05,
+    "heroId": 48,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/48.png"
+  },
+  {
+    "name": "Masha",
+    "winRate": 1.0,
+    "useRate": 8.6e-05,
+    "heroId": 88,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/88.png"
+  },
+  {
+    "name": "Selena",
+    "winRate": 1.0,
+    "useRate": 2.9e-05,
+    "heroId": 63,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/63.png"
+  },
+  {
+    "name": "Yve",
+    "winRate": 1.0,
+    "useRate": 2.9e-05,
+    "heroId": 101,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/101.png"
+  },
+  {
+    "name": "Diggie",
+    "winRate": 1.0,
+    "useRate": 2.9e-05,
+    "heroId": 48,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/48.png"
+  },
+  {
+    "name": "Masha",
+    "winRate": 1.0,
+    "useRate": 8.6e-05,
+    "heroId": 88,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/88.png"
+  },
+  {
+    "name": "Lolita",
+    "winRate": 1.0,
+    "useRate": 2.9e-05,
+    "heroId": 20,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/20.png"
+  },
+  {
+    "name": "Zhask",
+    "winRate": 1.0,
+    "useRate": 8.6e-05,
+    "heroId": 50,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/50.png"
+  },
+  {
+    "name": "Mathilda",
+    "winRate": 1.0,
+    "useRate": 8.6e-05,
+    "heroId": 102,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/102.png"
+  },
+  {
+    "name": "Lolita",
+    "winRate": 1.0,
+    "useRate": 2.9e-05,
+    "heroId": 20,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/20.png"
+  },
+  {
+    "name": "Aulus",
+    "winRate": 0.882353,
+    "useRate": 0.000741,
+    "heroId": 108,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/108.png"
+  },
+  {
+    "name": "Aulus",
+    "winRate": 0.882353,
+    "useRate": 0.000741,
+    "heroId": 108,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/108.png"
+  },
+  {
+    "name": "Estes",
+    "winRate": 0.761905,
+    "useRate": 0.000602,
+    "heroId": 34,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/34.png"
+  },
+  {
+    "name": "Estes",
+    "winRate": 0.761905,
+    "useRate": 0.000602,
+    "heroId": 34,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/34.png"
+  },
+  {
+    "name": "Khaleed",
+    "winRate": 0.75,
+    "useRate": 0.000344,
+    "heroId": 98,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/98.png"
+  },
+  {
+    "name": "Khaleed",
+    "winRate": 0.75,
+    "useRate": 0.000344,
+    "heroId": 98,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/98.png"
+  },
+  {
+    "name": "Benedetta",
+    "winRate": 0.75,
+    "useRate": 0.000688,
+    "heroId": 97,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/97.png"
+  },
+  {
+    "name": "Benedetta",
+    "winRate": 0.75,
+    "useRate": 0.000688,
+    "heroId": 97,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/97.png"
+  },
+  {
+    "name": "Wanwan",
+    "winRate": 0.725,
+    "useRate": 0.001146,
+    "heroId": 89,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/89.png"
+  },
+  {
+    "name": "Wanwan",
+    "winRate": 0.725,
+    "useRate": 0.001146,
+    "heroId": 89,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/89.png"
+  },
+  {
+    "name": "Bane",
+    "winRate": 0.705882,
+    "useRate": 0.000487,
+    "heroId": 11,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/11.png"
+  },
+  {
+    "name": "Bane",
+    "winRate": 0.705882,
+    "useRate": 0.000487,
+    "heroId": 11,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/11.png"
+  },
+  {
+    "name": "Claude",
+    "winRate": 0.7,
+    "useRate": 0.000287,
+    "heroId": 65,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/65.png"
+  },
+  {
+    "name": "Claude",
+    "winRate": 0.7,
+    "useRate": 0.000287,
+    "heroId": 65,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/65.png"
+  },
+  {
+    "name": "Silvanna",
+    "winRate": 0.688596,
+    "useRate": 0.009941,
+    "heroId": 90,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/90.png"
+  },
+  {
+    "name": "Silvanna",
+    "winRate": 0.688596,
+    "useRate": 0.009941,
+    "heroId": 90,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/90.png"
+  },
+  {
+    "name": "Akai",
+    "winRate": 0.6875,
+    "useRate": 0.000458,
+    "heroId": 9,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/9.png"
+  },
+  {
+    "name": "Akai",
+    "winRate": 0.6875,
+    "useRate": 0.000458,
+    "heroId": 9,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/9.png"
+  },
+  {
+    "name": "Xavier",
+    "winRate": 0.676471,
+    "useRate": 0.000974,
+    "heroId": 115,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/115.png"
+  },
+  {
+    "name": "Xavier",
+    "winRate": 0.676471,
+    "useRate": 0.000974,
+    "heroId": 115,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/115.png"
+  },
+  {
+    "name": "Beatrix",
+    "winRate": 0.67,
+    "useRate": 0.002866,
+    "heroId": 105,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/105.png"
+  },
+  {
+    "name": "Beatrix",
+    "winRate": 0.67,
+    "useRate": 0.002866,
+    "heroId": 105,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/105.png"
+  },
+  {
+    "name": "Carmilla",
+    "winRate": 0.666667,
+    "useRate": 0.000258,
+    "heroId": 92,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/92.png"
+  },
+  {
+    "name": "Lapu-Lapu",
+    "winRate": 0.666667,
+    "useRate": 0.000172,
+    "heroId": 37,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/37.png"
+  },
+  {
+    "name": "Leomord",
+    "winRate": 0.666667,
+    "useRate": 0.000258,
+    "heroId": 67,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/67.png"
+  },
+  {
+    "name": "Floryn",
+    "winRate": 0.666667,
+    "useRate": 0.000172,
+    "heroId": 112,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/112.png"
+  },
+  {
+    "name": "Lapu-Lapu",
+    "winRate": 0.666667,
+    "useRate": 0.000172,
+    "heroId": 37,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/37.png"
+  },
+  {
+    "name": "Leomord",
+    "winRate": 0.666667,
+    "useRate": 0.000258,
+    "heroId": 67,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/67.png"
+  },
+  {
+    "name": "Carmilla",
+    "winRate": 0.666667,
+    "useRate": 0.000258,
+    "heroId": 92,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/92.png"
+  },
+  {
+    "name": "Floryn",
+    "winRate": 0.666667,
+    "useRate": 0.000172,
+    "heroId": 112,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/112.png"
+  },
+  {
+    "name": "Grock",
+    "winRate": 0.65,
+    "useRate": 0.000573,
+    "heroId": 44,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/44.png"
+  },
+  {
+    "name": "Grock",
+    "winRate": 0.65,
+    "useRate": 0.000573,
+    "heroId": 44,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/44.png"
+  },
+  {
+    "name": "Natan",
+    "winRate": 0.644737,
+    "useRate": 0.002178,
+    "heroId": 107,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/107.png"
+  },
+  {
+    "name": "Natan",
+    "winRate": 0.644737,
+    "useRate": 0.002178,
+    "heroId": 107,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/107.png"
+  },
+  {
+    "name": "Gusion",
+    "winRate": 0.641975,
+    "useRate": 0.002321,
+    "heroId": 56,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/56.png"
+  },
+  {
+    "name": "Gusion",
+    "winRate": 0.641975,
+    "useRate": 0.002321,
+    "heroId": 56,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/56.png"
+  },
+  {
+    "name": "Khufra",
+    "winRate": 0.629371,
+    "useRate": 0.000144,
+    "heroId": 78,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/78.png"
+  },
+  {
+    "name": "Khufra",
+    "winRate": 0.629371,
+    "useRate": 0.000144,
+    "heroId": 78,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/78.png"
+  },
+  {
+    "name": "Estes",
+    "winRate": 0.625,
+    "useRate": 0.000698,
+    "heroId": 34,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/34.png"
+  },
+  {
+    "name": "Estes",
+    "winRate": 0.625,
+    "useRate": 0.000698,
+    "heroId": 34,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/34.png"
+  },
+  {
+    "name": "Ixia",
+    "winRate": 0.621711,
+    "useRate": 0.008711,
+    "heroId": 121,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/121.png"
+  },
+  {
+    "name": "Ixia",
+    "winRate": 0.621711,
+    "useRate": 0.008711,
+    "heroId": 121,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/121.png"
+  },
+  {
+    "name": "Minsitthar",
+    "winRate": 0.614286,
+    "useRate": 0.002006,
+    "heroId": 74,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/74.png"
+  },
+  {
+    "name": "Minsitthar",
+    "winRate": 0.614286,
+    "useRate": 0.002006,
+    "heroId": 74,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/74.png"
+  },
+  {
+    "name": "Julian",
+    "winRate": 0.606195,
+    "useRate": 0.006476,
+    "heroId": 116,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/116.png"
+  },
+  {
+    "name": "Julian",
+    "winRate": 0.606195,
+    "useRate": 0.006476,
+    "heroId": 116,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/116.png"
+  },
+  {
+    "name": "Gord",
+    "winRate": 0.60274,
+    "useRate": 0.001591,
+    "heroId": 23,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/23.png"
+  },
+  {
+    "name": "Gord",
+    "winRate": 0.60274,
+    "useRate": 0.001591,
+    "heroId": 23,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/23.png"
+  },
+  {
+    "name": "Julian",
+    "winRate": 0.600316,
+    "useRate": 0.0138,
+    "heroId": 116,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/116.png"
+  },
+  {
+    "name": "Julian",
+    "winRate": 0.600316,
+    "useRate": 0.0138,
+    "heroId": 116,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/116.png"
+  },
+  {
+    "name": "Fredrinn",
+    "winRate": 0.595238,
+    "useRate": 0.001204,
+    "heroId": 117,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/117.png"
+  },
+  {
+    "name": "Fredrinn",
+    "winRate": 0.595238,
+    "useRate": 0.001204,
+    "heroId": 117,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/117.png"
+  },
+  {
+    "name": "Natalia",
+    "winRate": 0.591382,
+    "useRate": 0.000679,
+    "heroId": 24,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/24.png"
+  },
+  {
+    "name": "Natalia",
+    "winRate": 0.591382,
+    "useRate": 0.000679,
+    "heroId": 24,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/24.png"
+  },
+  {
+    "name": "Aulus",
+    "winRate": 0.590909,
+    "useRate": 0.00063,
+    "heroId": 108,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/108.png"
+  },
+  {
+    "name": "Aulus",
+    "winRate": 0.590909,
+    "useRate": 0.00063,
+    "heroId": 108,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/108.png"
+  },
+  {
+    "name": "Minotaur",
+    "winRate": 0.5875,
+    "useRate": 0.002292,
+    "heroId": 19,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/19.png"
+  },
+  {
+    "name": "Minotaur",
+    "winRate": 0.5875,
+    "useRate": 0.002292,
+    "heroId": 19,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/19.png"
+  },
+  {
+    "name": "Minotaur",
+    "winRate": 0.582257,
+    "useRate": 0.001171,
+    "heroId": 19,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/19.png"
+  },
+  {
+    "name": "Minotaur",
+    "winRate": 0.582257,
+    "useRate": 0.001171,
+    "heroId": 19,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/19.png"
+  },
+  {
+    "name": "Lolita",
+    "winRate": 0.581908,
+    "useRate": 0.001024,
+    "heroId": 20,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/20.png"
+  },
+  {
+    "name": "Lolita",
+    "winRate": 0.581908,
+    "useRate": 0.001024,
+    "heroId": 20,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/20.png"
+  },
+  {
+    "name": "Uranus",
+    "winRate": 0.57971,
+    "useRate": 0.001504,
+    "heroId": 59,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/59.png"
+  },
+  {
+    "name": "Uranus",
+    "winRate": 0.57971,
+    "useRate": 0.001504,
+    "heroId": 59,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/59.png"
+  },
+  {
+    "name": "Gloo",
+    "winRate": 0.579639,
+    "useRate": 0.005278,
+    "heroId": 104,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/104.png"
+  },
+  {
+    "name": "Gloo",
+    "winRate": 0.579639,
+    "useRate": 0.005278,
+    "heroId": 104,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/104.png"
+  },
+  {
+    "name": "Brody",
+    "winRate": 0.578889,
+    "useRate": 0.000908,
+    "heroId": 100,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/100.png"
+  },
+  {
+    "name": "Brody",
+    "winRate": 0.578889,
+    "useRate": 0.000908,
+    "heroId": 100,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/100.png"
+  },
+  {
+    "name": "Gloo",
+    "winRate": 0.576798,
+    "useRate": 0.005262,
+    "heroId": 104,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/104.png"
+  },
+  {
+    "name": "Gloo",
+    "winRate": 0.576798,
+    "useRate": 0.005262,
+    "heroId": 104,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/104.png"
+  },
+  {
+    "name": "Yve",
+    "winRate": 0.574324,
+    "useRate": 0.000149,
+    "heroId": 101,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/101.png"
+  },
+  {
+    "name": "Yve",
+    "winRate": 0.574324,
+    "useRate": 0.000149,
+    "heroId": 101,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/101.png"
+  },
+  {
+    "name": "Floryn",
+    "winRate": 0.573999,
+    "useRate": 0.001738,
+    "heroId": 112,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/112.png"
+  },
+  {
+    "name": "Floryn",
+    "winRate": 0.573999,
+    "useRate": 0.001738,
+    "heroId": 112,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/112.png"
+  },
+  {
+    "name": "Belerick",
+    "winRate": 0.573554,
+    "useRate": 0.017337,
+    "heroId": 70,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/70.png"
+  },
+  {
+    "name": "Belerick",
+    "winRate": 0.573554,
+    "useRate": 0.017337,
+    "heroId": 70,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/70.png"
+  },
+  {
+    "name": "Popol and Kupa",
+    "winRate": 0.572391,
+    "useRate": 0.001798,
+    "heroId": 94,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/94.png"
+  },
+  {
+    "name": "Popol and Kupa",
+    "winRate": 0.572391,
+    "useRate": 0.001798,
+    "heroId": 94,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/94.png"
+  },
+  {
+    "name": "Gloo",
+    "winRate": 0.572051,
+    "useRate": 0.005201,
+    "heroId": 104,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/104.png"
+  },
+  {
+    "name": "Gloo",
+    "winRate": 0.572051,
+    "useRate": 0.005201,
+    "heroId": 104,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/104.png"
+  },
+  {
+    "name": "Tigreal",
+    "winRate": 0.571984,
+    "useRate": 0.007365,
+    "heroId": 6,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/6.png"
+  },
+  {
+    "name": "Tigreal",
+    "winRate": 0.571984,
+    "useRate": 0.007365,
+    "heroId": 6,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/6.png"
+  },
+  {
+    "name": "Natalia",
+    "winRate": 0.571429,
+    "useRate": 0.000201,
+    "heroId": 24,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/24.png"
+  },
+  {
+    "name": "Natalia",
+    "winRate": 0.571429,
+    "useRate": 0.000201,
+    "heroId": 24,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/24.png"
+  },
+  {
+    "name": "Carmilla",
+    "winRate": 0.567219,
+    "useRate": 0.000548,
+    "heroId": 92,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/92.png"
+  },
+  {
+    "name": "Carmilla",
+    "winRate": 0.567219,
+    "useRate": 0.000548,
+    "heroId": 92,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/92.png"
+  },
+  {
+    "name": "Mathilda",
+    "winRate": 0.566667,
+    "useRate": 6.1e-05,
+    "heroId": 102,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/102.png"
+  },
+  {
+    "name": "Jawhead",
+    "winRate": 0.566667,
+    "useRate": 0.00086,
+    "heroId": 54,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/54.png"
+  },
+  {
+    "name": "Jawhead",
+    "winRate": 0.566667,
+    "useRate": 0.00086,
+    "heroId": 54,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/54.png"
+  },
+  {
+    "name": "Mathilda",
+    "winRate": 0.566667,
+    "useRate": 6.1e-05,
+    "heroId": 102,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/102.png"
+  },
+  {
+    "name": "Aamon",
+    "winRate": 0.565789,
+    "useRate": 0.004971,
+    "heroId": 109,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/109.png"
+  },
+  {
+    "name": "Aamon",
+    "winRate": 0.565789,
+    "useRate": 0.004971,
+    "heroId": 109,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/109.png"
+  },
+  {
+    "name": "Lolita",
+    "winRate": 0.56397,
+    "useRate": 0.001318,
+    "heroId": 20,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/20.png"
+  },
+  {
+    "name": "Lolita",
+    "winRate": 0.56397,
+    "useRate": 0.001318,
+    "heroId": 20,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/20.png"
+  },
+  {
+    "name": "Masha",
+    "winRate": 0.563365,
+    "useRate": 0.001787,
+    "heroId": 88,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/88.png"
+  },
+  {
+    "name": "Masha",
+    "winRate": 0.563365,
+    "useRate": 0.001787,
+    "heroId": 88,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/88.png"
+  },
+  {
+    "name": "Lolita",
+    "winRate": 0.562472,
+    "useRate": 0.001346,
+    "heroId": 20,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/20.png"
+  },
+  {
+    "name": "Lolita",
+    "winRate": 0.562472,
+    "useRate": 0.001346,
+    "heroId": 20,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/20.png"
+  },
+  {
+    "name": "Gloo",
+    "winRate": 0.562456,
+    "useRate": 0.00143,
+    "heroId": 104,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/104.png"
+  },
+  {
+    "name": "Gloo",
+    "winRate": 0.562456,
+    "useRate": 0.00143,
+    "heroId": 104,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/104.png"
+  },
+  {
+    "name": "Hanabi",
+    "winRate": 0.56088,
+    "useRate": 0.072336,
+    "heroId": 60,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/60.png"
+  },
+  {
+    "name": "Hanabi",
+    "winRate": 0.56088,
+    "useRate": 0.072336,
+    "heroId": 60,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/60.png"
+  },
+  {
+    "name": "Lolita",
+    "winRate": 0.560344,
+    "useRate": 0.00159,
+    "heroId": 20,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/20.png"
+  },
+  {
+    "name": "Lolita",
+    "winRate": 0.560344,
+    "useRate": 0.00159,
+    "heroId": 20,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/20.png"
+  },
+  {
+    "name": "Silvanna",
+    "winRate": 0.559871,
+    "useRate": 0.008855,
+    "heroId": 90,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/90.png"
+  },
+  {
+    "name": "Silvanna",
+    "winRate": 0.559871,
+    "useRate": 0.008855,
+    "heroId": 90,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/90.png"
+  },
+  {
+    "name": "Gloo",
+    "winRate": 0.559443,
+    "useRate": 0.005546,
+    "heroId": 104,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/104.png"
+  },
+  {
+    "name": "Gloo",
+    "winRate": 0.559443,
+    "useRate": 0.005546,
+    "heroId": 104,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/104.png"
+  },
+  {
+    "name": "Fanny",
+    "winRate": 0.559322,
+    "useRate": 0.001691,
+    "heroId": 17,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/17.png"
+  },
+  {
+    "name": "Fanny",
+    "winRate": 0.559322,
+    "useRate": 0.001691,
+    "heroId": 17,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/17.png"
+  },
+  {
+    "name": "Hilda",
+    "winRate": 0.558592,
+    "useRate": 0.002178,
+    "heroId": 35,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/35.png"
+  },
+  {
+    "name": "Hilda",
+    "winRate": 0.558592,
+    "useRate": 0.002178,
+    "heroId": 35,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/35.png"
+  },
+  {
+    "name": "Irithel",
+    "winRate": 0.55814,
+    "useRate": 0.006161,
+    "heroId": 43,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/43.png"
+  },
+  {
+    "name": "Angela",
+    "winRate": 0.55814,
+    "useRate": 0.001232,
+    "heroId": 55,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/55.png"
+  },
+  {
+    "name": "Irithel",
+    "winRate": 0.55814,
+    "useRate": 0.006161,
+    "heroId": 43,
+    "avatar": "https://akmweb.youngjoygame.com/mlbb/hero/icon/43.png"
+  }
+]

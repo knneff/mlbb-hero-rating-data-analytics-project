@@ -3,9 +3,16 @@ import json
 import os
 
 def fetch_mlbb_data():
-    auth_token = os.environ.get('MLBB_AUTH_TOKEN')
     url = 'https://api.gms.moontontech.com/api/gms/source/2669606/2756567'
     
+    # Using environment variable for security
+    auth_token = os.environ.get('MLBB_AUTH_TOKEN')
+    
+    # Fallback to hardcoded token only if environment variable is missing
+    # (Useful for local testing, but environment variable is preferred)
+    if not auth_token:
+        auth_token = 'UoXPlAENpsE7NAfeDxk4SvbyDTc='
+
     headers = {
         'Content-Type': 'application/json;charset=UTF-8',
         'x-actid': '2669607',
@@ -15,69 +22,64 @@ def fetch_mlbb_data():
     }
 
     body = {
-        "pageSize": 131, 
+        "pageSize": 200, 
         "pageIndex": 1,
-        "filters": [
-            { "field": "bigrank", "operator": "eq", "value": "101" },
-            { "field": "match_type", "operator": "eq", "value": 0 }
-        ],
+        "filters": [], 
         "sorts": [
             { "data": { "field": "main_hero_win_rate", "order": "desc" }, "type": "sequence" }
         ],
-        "fields": [
-            "main_hero",
-            "main_hero_appearance_rate",
-            "main_hero_win_rate",
-            "main_heroid"
-        ]
+        "fields": ["main_hero", "main_hero_appearance_rate", "main_hero_win_rate", "main_heroid"]
     }
 
     try:
         print("Connecting to Moonton GMS API...")
         response = requests.post(url, headers=headers, json=body, timeout=20)
         
-        print(f"Response Status: {response.status_code}")
-        
-        response.raise_for_status()
-        raw_data = response.json()
+        if response.status_code != 200:
+            print(f"Failed to connect. Status: {response.status_code}")
+            return
 
-        hero_list = raw_data.get('data', {}).get('list', [])
+        raw_json = response.json()
+        # Data is located in 'data' -> 'records' based on successful terminal run
+        records = raw_json.get('data', {}).get('records', [])
         
-        if not hero_list:
-            print("WARNING: API returned success but 'data.list' is empty.")
-            print("Full API Response for debugging:")
-            print(json.dumps(raw_data, indent=2))
-            
-            print("Retrying with broader filters (removing bigrank)...")
-            body["filters"] = [{ "field": "match_type", "operator": "eq", "value": 0 }]
-            response = requests.post(url, headers=headers, json=body, timeout=20)
-            hero_list = response.json().get('data', {}).get('list', [])
+        if not records:
+            print("WARNING: API returned success but 'data.records' is empty.")
+            return
+
+        print(f"Total raw records found: {len(records)}")
 
         processed_heroes = []
-        for hero in hero_list:
-            hero_id = hero.get('main_heroid')
-            if hero_id:
+        for item in records:
+            # Each record has a nested 'data' object containing hero stats
+            hero_data = item.get('data', {})
+            
+            hero_id = hero_data.get('main_heroid')
+            # Name is nested: hero_data -> main_hero -> data -> name
+            hero_info = hero_data.get('main_hero', {}).get('data', {})
+            name = hero_info.get('name')
+            
+            wr_raw = hero_data.get('main_hero_win_rate', 0)
+            ar_raw = hero_data.get('main_hero_appearance_rate', 0)
+            
+            if hero_id and name:
                 processed_heroes.append({
-                    "name": hero.get('main_hero'),
-                    "winRate": hero.get('main_hero_win_rate'),
-                    "useRate": hero.get('main_hero_appearance_rate'),
+                    "name": name,
+                    "winRate": float(wr_raw),
+                    "useRate": float(ar_raw),
                     "heroId": hero_id,
                     "avatar": f"https://akmweb.youngjoygame.com/mlbb/hero/icon/{hero_id}.png"
                 })
 
+        # Ensure the public directory exists for the GitHub Action / Vercel
         os.makedirs('public', exist_ok=True)
-        
         with open('public/data.json', 'w') as f:
             json.dump(processed_heroes, f, indent=2)
             
-        print(f"Success! Processed {len(processed_heroes)} heroes.")
+        print(f"Success! Processed {len(processed_heroes)} heroes into public/data.json")
 
     except Exception as e:
         print(f"CRITICAL ERROR: {e}")
-        # Ensure we don't break the build
-        if not os.path.exists('public/data.json'):
-            with open('public/data.json', 'w') as f:
-                json.dump([], f)
 
 if __name__ == "__main__":
     fetch_mlbb_data()
