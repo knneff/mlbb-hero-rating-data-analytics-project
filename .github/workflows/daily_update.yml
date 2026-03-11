@@ -2,21 +2,22 @@ name: Daily MLBB Data Update
 
 on:
   schedule:
-    # This is a 'Cron' expression. '0 0 * * *' means every day at midnight UTC.
     - cron: '0 0 * * *'
-  workflow_dispatch: # This adds a "Run Now" button in the GitHub UI for testing
+  workflow_dispatch: 
 
 jobs:
   scrape_and_push:
     runs-on: ubuntu-latest
     
-    # Give this action permission to write (push) to your repository
     permissions:
       contents: write
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Debug File Structure
+        run: ls -R
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -27,13 +28,13 @@ jobs:
         run: pip install requests
 
       - name: Run the Scraper
-        run: python scripts/scrape_mlbb.py
+        # Using ./ to ensure it looks in the current checked-out directory
+        run: python ./scripts/scrape_mlbb.py
 
       - name: Commit and Push Changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add public/data.json
-          # Only commit if there are actually changes in the data
           git commit -m "data: daily update $(date +'%Y-%m-%d')" || exit 0
           git push
