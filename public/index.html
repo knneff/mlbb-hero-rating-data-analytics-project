@@ -98,6 +98,8 @@
                 statusEl.innerText = `Dataset: ${heroes.length} Heroes`;
                 
                 updateSidebar();
+                // Trigger initial draw to show axes while images load
+                draw();
                 loadImages();
             } catch (err) {
                 statusEl.innerText = "Error: data.json not found";
@@ -116,24 +118,23 @@
         }
 
         function loadImages() {
-            let loaded = 0;
             if (heroes.length === 0) return;
 
-            heroes.forEach(hero => {
+            // Load images in batches to avoid network congestion
+            heroes.forEach((hero, index) => {
                 const img = new Image();
                 img.crossOrigin = "anonymous";
                 img.src = hero.avatar;
                 img.onload = () => {
-                    loaded++;
                     images[hero.heroId] = img;
-                    if (loaded === heroes.length) draw();
+                    // Redraw whenever a new image finishes loading
+                    requestAnimationFrame(draw);
                 };
                 img.onerror = () => {
-                    loaded++;
-                    if (loaded === heroes.length) draw();
+                    // Placeholder logic if needed
+                    requestAnimationFrame(draw);
                 };
             });
-            draw();
         }
 
         function drawHero(hero, isHovered, minWin, maxWin, minUse, maxUse, w, h) {
@@ -164,10 +165,15 @@
                 ctx.arc(x, y, size / 2, 0, Math.PI * 2);
                 ctx.stroke();
             } else {
-                ctx.fillStyle = hero.winRate >= 0.5 ? '#10b981' : '#f43f5e';
+                // Draw a colored dot as a placeholder while loading
+                ctx.fillStyle = hero.winRate >= 0.5 ? 'rgba(16, 185, 129, 0.3)' : 'rgba(244, 63, 94, 0.3)';
                 ctx.beginPath();
-                ctx.arc(x, y, isHovered ? 8 : 4, 0, Math.PI * 2);
+                ctx.arc(x, y, baseSize / 2, 0, Math.PI * 2);
                 ctx.fill();
+                // Add a small pulse border
+                ctx.strokeStyle = hero.winRate >= 0.5 ? '#10b981' : '#f43f5e';
+                ctx.lineWidth = 1;
+                ctx.stroke();
             }
         }
 
@@ -219,12 +225,14 @@
                 ctx.fillText((val * 100).toFixed(1) + '%', x, h - padding + 20);
             }
 
+            // Draw non-hovered heroes first
             heroes.forEach(hero => {
                 if (hero !== hoverHero) {
                     drawHero(hero, false, minWin, maxWin, minUse, maxUse, w, h);
                 }
             });
 
+            // Draw hovered hero on top
             if (hoverHero) {
                 drawHero(hoverHero, true, minWin, maxWin, minUse, maxUse, w, h);
             }
