@@ -15,7 +15,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        # No extra path settings here to avoid doubling the folder
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -26,13 +25,17 @@ jobs:
         run: pip install requests
 
       - name: Run the Scraper
-        # We tell it to look exactly in the root scripts folder
         run: python ./scripts/scrape_mlbb.py
+
+      - name: Verify Data Generation
+        # This step will fail the action if the file wasn't created
+        run: ls -l public/data.json
 
       - name: Commit and Push Changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add public/data.json
-          git commit -m "data: daily update $(date +'%Y-%m-%d')" || exit 0
-          git push
+          # The "|| exit 0" prevents the action from failing if there are no new meta changes
+          git commit -m "data: daily update $(date +'%Y-%m-%d')" || echo "No changes to commit"
+          git push origin HEAD
