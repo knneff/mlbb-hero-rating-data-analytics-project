@@ -27,7 +27,7 @@ jobs:
         run: pip install requests
 
       - name: Run the Scraper
-        run: python scripts/web_scrape_mlbb.py
+        run: python scripts/scrape_mlbb.py
 
       - name: Commit and Push Changes
         run: |
