@@ -60,7 +60,11 @@
                     
                     <!-- Axis Labels -->
                     <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">Appearance Rate (Pick %)</div>
-                    <div class="absolute left-4 top-1/2 -rotate-90 -translate-y-1/2 text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">Win Rate (%)</div>
+                    
+                    <!-- Fixed Win Rate Axis Label Position -->
+                    <div class="absolute left-4 top-1/2 -rotate-90 -translate-x-1/2 -translate-y-1/2 text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] whitespace-nowrap" style="transform-origin: center center;">
+                        Win Rate (%)
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,8 +80,11 @@
         let heroes = [];
         let images = {};
         const padding = 70;
-        const iconSize = 28; // Reduced from 36
         let hoverHero = null;
+
+        function getIconSize() {
+            return window.innerWidth < 768 ? 14 : 22;
+        }
 
         async function init() {
             try {
@@ -104,8 +111,8 @@
             const sortedWin = [...heroes].sort((a, b) => b.winRate - a.winRate);
             const sortedUse = [...heroes].sort((a, b) => b.useRate - a.useRate);
             
-            document.getElementById('topWinRate').innerText = `${sortedWin[0].name} (${(sortedWin[0].winRate * 100).toFixed(1)}%)`;
-            document.getElementById('topUseRate').innerText = `${sortedUse[0].name} (${(sortedUse[0].useRate * 100).toFixed(1)}%)`;
+            document.getElementById('topWinRate').innerText = `${sortedWin[0].name} (${(sortedWin[0].winRate * 100).toFixed(2)}%)`;
+            document.getElementById('topUseRate').innerText = `${sortedUse[0].name} (${(sortedUse[0].useRate * 100).toFixed(2)}%)`;
         }
 
         function loadImages() {
@@ -136,7 +143,8 @@
             hero.posX = x;
             hero.posY = y;
 
-            const size = isHovered ? iconSize * 2.2 : iconSize; // Increased scale multiplier to maintain detail when hovered
+            const baseSize = getIconSize();
+            const size = isHovered ? baseSize * 2.5 : baseSize;
 
             if (images[hero.heroId]) {
                 ctx.save();
@@ -151,14 +159,14 @@
                 ctx.restore();
                 
                 ctx.strokeStyle = hero.winRate >= 0.5 ? '#10b981' : '#f43f5e';
-                ctx.lineWidth = isHovered ? 4 : 2;
+                ctx.lineWidth = isHovered ? 3 : 1.5;
                 ctx.beginPath();
                 ctx.arc(x, y, size / 2, 0, Math.PI * 2);
                 ctx.stroke();
             } else {
                 ctx.fillStyle = hero.winRate >= 0.5 ? '#10b981' : '#f43f5e';
                 ctx.beginPath();
-                ctx.arc(x, y, isHovered ? 12 : 6, 0, Math.PI * 2);
+                ctx.arc(x, y, isHovered ? 8 : 4, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
@@ -222,16 +230,17 @@
             }
         }
 
-        canvas.addEventListener('mousemove', (e) => {
+        function handlePointerMove(clientX, clientY) {
             const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
+            const mouseX = clientX - rect.left;
+            const mouseY = clientY - rect.top;
+            const currentIconSize = getIconSize();
 
             let found = null;
             for (let i = heroes.length - 1; i >= 0; i--) {
                 const hero = heroes[i];
                 const dist = Math.sqrt((mouseX - hero.posX)**2 + (mouseY - hero.posY)**2);
-                if (dist < iconSize / 1.5) {
+                if (dist < currentIconSize / 1.2) {
                     found = hero;
                     break;
                 }
@@ -249,10 +258,10 @@
                         <img src="${found.avatar}" class="w-10 h-10 rounded-full border border-slate-700">
                         <div>
                             <div class="font-bold text-white text-base leading-tight">${found.name}</div>
-                            <div class="text-[10px] text-slate-500 font-bold uppercase">ID: ${found.heroId}</div>
+                            <div class="text-[10px] text-slate-400 font-bold uppercase">Mythic+ Stats</div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 border-t border-slate-800 pt-2 mt-2">
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-2 border-t border-slate-800 pt-2 mt-2">
                         <div>
                             <div class="text-[9px] text-slate-500 uppercase font-black">Win Rate</div>
                             <div class="font-mono font-bold ${found.winRate >= 0.5 ? 'text-emerald-400' : 'text-rose-400'}">${(found.winRate * 100).toFixed(2)}%</div>
@@ -261,12 +270,16 @@
                             <div class="text-[9px] text-slate-500 uppercase font-black">Pick Rate</div>
                             <div class="font-mono font-bold text-blue-400">${(found.useRate * 100).toFixed(2)}%</div>
                         </div>
+                        <div class="col-span-2">
+                            <div class="text-[9px] text-slate-500 uppercase font-black">Ban Rate</div>
+                            <div class="font-mono font-bold text-amber-400">${(found.banRate * 100).toFixed(2)}%</div>
+                        </div>
                     </div>
                 `;
 
                 const containerRect = container.getBoundingClientRect();
                 const tooltipWidth = tooltip.offsetWidth;
-                const offset = 35; // Increased offset from 20 to 35
+                const offset = 35;
 
                 let posX = mouseX + offset;
                 let posY = mouseY - (tooltip.offsetHeight / 2);
@@ -289,6 +302,13 @@
                 tooltip.style.display = 'none';
                 tooltip.style.opacity = '0';
                 draw();
+            }
+        }
+
+        canvas.addEventListener('mousemove', (e) => handlePointerMove(e.clientX, e.clientY));
+        canvas.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 0) {
+                handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
             }
         });
 
